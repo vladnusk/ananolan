@@ -52,6 +52,8 @@ npm run build
 npm start
 ```
 
+**Check before pushing (avoid Netlify build failures):** Run `npm run ci` locally. It runs lint and build (same as Netlify). Fix any TypeScript or ESLint errors before committing.
+
 ## Custom domains on Netlify
 
 1. **Main site**  

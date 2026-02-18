@@ -1,6 +1,6 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { getContentBySlug, getSlugs } from "@/lib/content";
+import { getContentBySlug, getSlugs, type BlogFrontmatter } from "@/lib/content";
 import { MdxContent } from "@/lib/mdx";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/lib/constants";
@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const doc = await getContentBySlug("main", "blog", locale as Locale, slug);
+  const doc = await getContentBySlug<BlogFrontmatter>("main", "blog", locale as Locale, slug);
   if (!doc) notFound();
   const t = await getTranslations("blog");
   return (
