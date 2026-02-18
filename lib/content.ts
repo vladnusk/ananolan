@@ -19,6 +19,27 @@ export interface BlogFrontmatter extends PageFrontmatter {
   image?: string;
 }
 
+/** Taxes homepage structured content (CMS-editable). */
+export interface TaxesHomeFrontmatter {
+  hero_title: string;
+  hero_subtitle: string;
+  hero_image?: string;
+  highlights: { text: string }[];
+  intro_headline: string;
+  intro_text: string;
+  about_headline: string;
+  about_text: string;
+  about_image?: string;
+  services: { title: string; description: string }[];
+  pricing?: {
+    name: string;
+    price: string;
+    description?: string;
+    features?: string[];
+    highlighted?: boolean;
+  }[];
+}
+
 export interface ContentDoc<T = PageFrontmatter> {
   slug: string;
   frontmatter: T;
@@ -92,6 +113,28 @@ export const getSlugs = cache(
         .map((f) => f.replace(/\.md$/, ""));
     } catch {
       return [];
+    }
+  }
+);
+
+const TAXES_HOME_DIR = path.join(CONTENT_DIR, "taxes", "home");
+
+/**
+ * Get taxes homepage content by locale. Returns null if file does not exist.
+ */
+export const getTaxesHome = cache(
+  async (locale: Locale): Promise<ContentDoc<TaxesHomeFrontmatter> | null> => {
+    const filePath = path.join(TAXES_HOME_DIR, `${locale}.md`);
+    try {
+      const raw = fs.readFileSync(filePath, "utf-8");
+      const { data, content } = matter(raw);
+      return {
+        slug: locale,
+        frontmatter: data as TaxesHomeFrontmatter,
+        content,
+      };
+    } catch {
+      return null;
     }
   }
 );

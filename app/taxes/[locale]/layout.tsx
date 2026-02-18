@@ -24,7 +24,7 @@ export default async function TaxesLocaleLayout({ children, params }: Props) {
       <div className="flex min-h-screen flex-col">
         <Header isTaxesSite locale={locale} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer isTaxesSite />
       </div>
     </NextIntlClientProvider>
   );

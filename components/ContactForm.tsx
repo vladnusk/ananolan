@@ -44,7 +44,7 @@ export function ContactForm() {
       </p>
       <div>
         <label htmlFor="name" className="mb-1 block text-sm font-medium">
-          Name
+          {t("name")}
         </label>
         <input
           id="name"
@@ -57,7 +57,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="email" className="mb-1 block text-sm font-medium">
-          Email
+          {t("email")}
         </label>
         <input
           id="email"
@@ -70,7 +70,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="message" className="mb-1 block text-sm font-medium">
-          Message
+          {t("message")}
         </label>
         <textarea
           id="message"
@@ -82,17 +82,17 @@ export function ContactForm() {
         />
       </div>
       {status === "success" && (
-        <p className="text-sm text-green-600">Thanks, your message was sent.</p>
+        <p className="text-sm text-green-600">{t("success")}</p>
       )}
       {status === "error" && (
-        <p className="text-sm text-red-600">Something went wrong. Please try again.</p>
+        <p className="text-sm text-red-600">{t("error")}</p>
       )}
       <button
         type="submit"
         disabled={status === "sending"}
         className="w-full rounded bg-brand-primary px-4 py-2 font-medium text-white hover:bg-brand-secondary disabled:opacity-50"
       >
-        {status === "sending" ? "Sending…" : t("submit")}
+        {status === "sending" ? t("sending") : t("submit")}
       </button>
     </form>
   );

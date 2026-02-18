@@ -8,6 +8,7 @@
   },
   "taxesNav": {
     "home": "Главная",
+    "services": "Услуги",
     "pricing": "Цены",
     "faq": "Вопросы",
     "contact": "Контакты"
@@ -24,6 +25,24 @@
   },
   "contact": {
     "title": "Связаться с нами",
-    "submit": "Отправить"
+    "name": "Имя",
+    "email": "Email",
+    "message": "Сообщение",
+    "submit": "Отправить",
+    "sending": "Отправка…",
+    "success": "Спасибо, ваше сообщение отправлено.",
+    "error": "Что-то пошло не так. Попробуйте ещё раз."
+  },
+  "taxesHome": {
+    "getStarted": "Начать",
+    "freeConsultation": "Бесплатная консультация",
+    "highlightsLabel": "Почему мы",
+    "introLabel": "Добро пожаловать",
+    "aboutLabel": "О нас",
+    "servicesLabel": "Услуги",
+    "pricingLabel": "Цены",
+    "contactLabel": "Контакты",
+    "contactSubtitle": "Напишите нам для бесплатной консультации или расчёта.",
+    "popular": "Популярный"
   }
 }

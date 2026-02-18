@@ -8,6 +8,7 @@
   },
   "taxesNav": {
     "home": "Home",
+    "services": "Services",
     "pricing": "Pricing",
     "faq": "FAQ",
     "contact": "Contact"
@@ -24,6 +25,24 @@
   },
   "contact": {
     "title": "Contact Us",
-    "submit": "Send message"
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send message",
+    "sending": "Sending…",
+    "success": "Thanks, your message was sent.",
+    "error": "Something went wrong. Please try again."
+  },
+  "taxesHome": {
+    "getStarted": "Get Started",
+    "freeConsultation": "Free Consultation",
+    "highlightsLabel": "Why choose us",
+    "introLabel": "Welcome",
+    "aboutLabel": "About us",
+    "servicesLabel": "Services",
+    "pricingLabel": "Pricing",
+    "contactLabel": "Contact",
+    "contactSubtitle": "Reach out for a free consultation or quote.",
+    "popular": "Popular"
   }
 }

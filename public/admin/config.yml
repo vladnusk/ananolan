@@ -2,9 +2,12 @@
 # See https://decapcms.org/docs/configuration-options/
 
 backend:
-  name: git-gateway
+  name: github
   repo: vladnusk/ananolan
   branch: main
+  base_url: https://decap-proxy.ananolan.workers.dev
+  auth_endpoint: auth
+
 
 # Optional: use Netlify Identity for auth when on Netlify
 # local_backend:
@@ -77,6 +80,87 @@ collections:
       - { label: "Author", name: "author", widget: "string", required: false }
       - { label: "Image", name: "image", widget: "image", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  # ─── Taxes site homepage (structured content) ───
+  - name: "taxes_home"
+    label: "Taxes Home"
+    files:
+      - name: "en"
+        label: "English"
+        file: "content/taxes/home/en.md"
+        fields:
+          - { label: "Hero Title", name: "hero_title", widget: "string" }
+          - { label: "Hero Subtitle", name: "hero_subtitle", widget: "text" }
+          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+          - label: "Highlights"
+            name: "highlights"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+          - { label: "Intro Headline", name: "intro_headline", widget: "string" }
+          - { label: "Intro Text", name: "intro_text", widget: "text" }
+          - { label: "About Headline", name: "about_headline", widget: "string" }
+          - { label: "About Text", name: "about_text", widget: "text" }
+          - { label: "About Image", name: "about_image", widget: "image", required: false }
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Pricing Plans"
+            name: "pricing"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Price", name: "price", widget: "string" }
+              - { label: "Description", name: "description", widget: "string", required: false }
+              - label: "Features"
+                name: "features"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Highlighted", name: "highlighted", widget: "boolean", default: false }
+      - name: "ru"
+        label: "Russian"
+        file: "content/taxes/home/ru.md"
+        fields:
+          - { label: "Hero Title", name: "hero_title", widget: "string" }
+          - { label: "Hero Subtitle", name: "hero_subtitle", widget: "text" }
+          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+          - label: "Highlights"
+            name: "highlights"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+          - { label: "Intro Headline", name: "intro_headline", widget: "string" }
+          - { label: "Intro Text", name: "intro_text", widget: "text" }
+          - { label: "About Headline", name: "about_headline", widget: "string" }
+          - { label: "About Text", name: "about_text", widget: "text" }
+          - { label: "About Image", name: "about_image", widget: "image", required: false }
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Pricing Plans"
+            name: "pricing"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Price", name: "price", widget: "string" }
+              - { label: "Description", name: "description", widget: "string", required: false }
+              - label: "Features"
+                name: "features"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Highlighted", name: "highlighted", widget: "boolean", default: false }
 
   # ─── Taxes site pages (Landing, Pricing, FAQ, Contact) ───
   - name: "taxes_pages_en"
