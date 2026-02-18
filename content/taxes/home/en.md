@@ -28,7 +28,7 @@ about_text: >
 
 
   Our fully online services make working with us simple, secure, and convenient — no matter where you are located.
-about_image: ""
+about_image: /uploads/ana-portrait.png
 services:
   - title: Business Registration
     description: Start your U.S. business with confidence. We help you register LLCs
