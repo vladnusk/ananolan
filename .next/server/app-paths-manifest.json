@@ -1,0 +1,4 @@
+{
+  "/api/cms-config/route": "app/api/cms-config/route.js",
+  "/[locale]/page": "app/[locale]/page.js"
+}

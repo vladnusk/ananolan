@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
+  "taxesNav": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "footer": {
+    "copyright": "© {year} {brand}. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read more",
+    "backToList": "Back to blog"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "submit": "Send message"
+  }
+}

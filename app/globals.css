@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #0f172a;
+  --background: #ffffff;
+  --brand: #0f766e;
+  --brand-muted: #5eead4;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+/* Prose for Markdown content */
+.prose h1 {
+  @apply text-3xl font-bold text-brand-secondary mt-6 mb-4;
+}
+.prose h2 {
+  @apply text-2xl font-semibold text-brand-secondary mt-6 mb-3;
+}
+.prose p {
+  @apply my-3 leading-relaxed;
+}
+.prose ul, .prose ol {
+  @apply my-3 pl-6;
+}
+.prose a {
+  @apply text-brand-primary underline hover:text-brand-accent;
+}
+.prose strong {
+  @apply font-semibold;
+}

@@ -1,0 +1,106 @@
+# Decap CMS (formerly Netlify CMS) – Ana Nolan
+# See https://decapcms.org/docs/configuration-options/
+
+backend:
+  name: git-gateway
+  repo: vladnusk/ananolan
+  branch: main
+
+# Optional: use Netlify Identity for auth when on Netlify
+# local_backend:
+#   url: http://localhost:3001/api/v1
+#   allowed_hosts: ["localhost"]
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+locale: "en"
+
+# i18n: multiple_folders approach – each collection has en/ and ru/ folders
+# so editors pick the folder (locale) when creating/editing.
+
+collections:
+  # ─── Main site pages (Home, About, Pricing, Contact) ───
+  - name: "main_pages_en"
+    label: "Main Pages (English)"
+    folder: "content/main/pages/en"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter_markdown"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Layout", name: "layout", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "main_pages_ru"
+    label: "Main Pages (Russian)"
+    folder: "content/main/pages/ru"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter_markdown"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Layout", name: "layout", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # ─── Main site blog ───
+  - name: "main_blog_en"
+    label: "Main Blog (English)"
+    folder: "content/main/blog/en"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter_markdown"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string", required: false }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "main_blog_ru"
+    label: "Main Blog (Russian)"
+    folder: "content/main/blog/ru"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter_markdown"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string", required: false }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # ─── Taxes site pages (Landing, Pricing, FAQ, Contact) ───
+  - name: "taxes_pages_en"
+    label: "Taxes Pages (English)"
+    folder: "content/taxes/pages/en"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter_markdown"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Layout", name: "layout", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "taxes_pages_ru"
+    label: "Taxes Pages (Russian)"
+    folder: "content/taxes/pages/ru"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter_markdown"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Layout", name: "layout", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }

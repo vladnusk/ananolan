@@ -1,0 +1,44 @@
+# Ana Nolan – Netlify deployment
+# See https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  command = "npm run build"
+  # Netlify detects Next.js and uses the appropriate runtime; no need to set publish for SSR
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Next.js runtime (Netlify handles Next automatically when it detects it)
+# No need for explicit plugin if using default Next build
+
+# Redirects: ensure admin and assets work
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+  force = true
+
+# Optional: redirect form submission success (Netlify Forms handle POST to current URL)
+# [[redirects]]
+#   from = "/api/form-success"
+#   to = "/?form=success"
+#   status = 302
+
+# SPA fallback only if you add client-side routing for 404
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
+#   conditions = {Role = ["admin"]}
+
+# Headers for security (optional)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"

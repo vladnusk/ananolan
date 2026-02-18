@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Главная",
+    "about": "О нас",
+    "pricing": "Цены",
+    "contact": "Контакты",
+    "blog": "Блог"
+  },
+  "taxesNav": {
+    "home": "Главная",
+    "pricing": "Цены",
+    "faq": "Вопросы",
+    "contact": "Контакты"
+  },
+  "footer": {
+    "copyright": "© {year} {brand}. Все права защищены.",
+    "privacy": "Конфиденциальность",
+    "terms": "Условия"
+  },
+  "blog": {
+    "title": "Блог",
+    "readMore": "Читать далее",
+    "backToList": "Назад к блогу"
+  },
+  "contact": {
+    "title": "Связаться с нами",
+    "submit": "Отправить"
+  }
+}
