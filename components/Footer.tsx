@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/constants";
 
 export function Footer() {
@@ -14,12 +15,12 @@ export function Footer() {
           {t("copyright", { year, brand: BRAND.mainSiteTitle })}
         </p>
         <div className="mt-2 flex justify-center gap-4 text-sm">
-          <a href="/privacy" className="text-brand-primary hover:underline">
+          <Link href="/privacy" className="text-brand-primary hover:underline">
             {t("privacy")}
-          </a>
-          <a href="/terms" className="text-brand-primary hover:underline">
+          </Link>
+          <Link href="/terms" className="text-brand-primary hover:underline">
             {t("terms")}
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
