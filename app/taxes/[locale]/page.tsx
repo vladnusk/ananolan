@@ -25,6 +25,8 @@ const DEFAULT_HOME = {
   about_headline: "Your Trusted Accounting Partner",
   about_text:
     "Founded by Anastasia Nolan, Certified Tax Preparer and QuickBooks ProAdvisor, our firm provides professional tax and accounting services for clients across the United States.\n\nWe specialize in helping Russian-speaking individuals, business owners, and non-residents navigate U.S. tax regulations with confidence.\n\nOur fully online services make working with us simple, secure, and convenient — no matter where you are located.",
+  services_headline: "Comprehensive Tax Solutions",
+  services_subtitle: "Professional services to keep you compliant and confident.",
   services: [
     { title: "Business Registration", description: "Start your U.S. business with confidence. We help you register LLCs and corporations, obtain EIN numbers, and ensure full compliance from day one." },
     { title: "Business Tax Returns", description: "Accurate preparation and filing for LLCs, S-Corps, and C-Corps. We help minimize tax liability and keep your business compliant." },
@@ -35,6 +37,8 @@ const DEFAULT_HOME = {
     { title: "Non-Resident Tax Services", description: "Specialized tax services for non-U.S. residents, foreign business owners, and new immigrants." },
     { title: "Sales & Payroll Taxes", description: "Complete management of payroll taxes and sales tax filings to keep your business compliant." },
   ],
+  pricing_headline: "Transparent & Affordable Pricing",
+  pricing_subtitle: "Clear pricing for individuals and businesses. No hidden fees.",
   pricing: [
     { name: "Basic", price: "$99", description: "Individual tax return, simple situation.", features: ["Federal & state filing", "Standard deduction", "Email support"], highlighted: false },
     { name: "Professional", price: "$199", description: "Most popular for individuals and sole proprietors.", features: ["Everything in Basic", "Itemized deductions", "Schedule C support", "Priority support"], highlighted: true },
@@ -57,13 +61,17 @@ export default async function TaxesLandingPage({ params }: Props) {
       heroTitle={data.hero_title}
       heroSubtitle={data.hero_subtitle}
       heroImage={heroImage}
-      highlights={data.highlights}
+      highlights={data.highlights ?? DEFAULT_HOME.highlights}
       introHeadline={data.intro_headline}
       introText={data.intro_text}
       aboutHeadline={data.about_headline}
       aboutText={data.about_text}
       aboutImage={aboutImage}
-      services={data.services}
+      servicesHeadline={data.services_headline ?? DEFAULT_HOME.services_headline}
+      servicesSubtitle={data.services_subtitle ?? DEFAULT_HOME.services_subtitle}
+      services={data.services ?? DEFAULT_HOME.services}
+      pricingHeadline={data.pricing_headline ?? DEFAULT_HOME.pricing_headline}
+      pricingSubtitle={data.pricing_subtitle ?? DEFAULT_HOME.pricing_subtitle}
       pricing={pricing}
     />
   );

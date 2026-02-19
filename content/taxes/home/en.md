@@ -29,6 +29,9 @@ about_text: >
 
   Our fully online services make working with us simple, secure, and convenient — no matter where you are located.
 about_image: /uploads/ana-portrait.png
+about_image: ""
+services_headline: Comprehensive Tax Solutions
+services_subtitle: Professional services to keep you compliant and confident.
 services:
   - title: Business Registration
     description: Start your U.S. business with confidence. We help you register LLCs
@@ -55,31 +58,33 @@ services:
   - title: Sales & Payroll Taxes
     description: Complete management of payroll taxes and sales tax filings to keep
       your business compliant.
+pricing_headline: Transparent & Affordable Pricing
+pricing_subtitle: Clear pricing for individuals and businesses. No hidden fees.
 pricing:
-  - name: Basic
-    price: $99
-    description: Individual tax return, simple situation.
-    features:
-      - Federal & state filing
-      - Standard deduction
-      - Email support
+  - name: "Basic"
+    price: "$99"
+    description: "Individual tax return, simple situation."
+    features: |
+      Federal & state filing
+      Standard deduction
+      Email support
     highlighted: false
-  - name: Professional
-    price: $199
-    description: Most popular for individuals and sole proprietors.
-    features:
-      - Everything in Basic
-      - Itemized deductions
-      - Schedule C support
-      - Priority support
+  - name: "Professional"
+    price: "$199"
+    description: "Most popular for individuals and sole proprietors."
+    features: |
+      Everything in Basic
+      Itemized deductions
+      Schedule C support
+      Priority support
     highlighted: true
-  - name: Business
-    price: $499
-    description: Full business and multi-state support.
-    features:
-      - Everything in Professional
-      - Business entity returns
-      - Multi-state filing
-      - Year-round advisory
+  - name: "Business"
+    price: "$499"
+    description: "Full business and multi-state support."
+    features: |
+      Everything in Professional
+      Business entity returns
+      Multi-state filing
+      Year-round advisory
     highlighted: false
 ---

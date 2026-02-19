@@ -102,12 +102,16 @@ collections:
           - { label: "About Headline", name: "about_headline", widget: "string" }
           - { label: "About Text", name: "about_text", widget: "text" }
           - { label: "About Image", name: "about_image", widget: "image", required: false }
+          - { label: "Services Headline", name: "services_headline", widget: "string" }
+          - { label: "Services Subtitle", name: "services_subtitle", widget: "text" }
           - label: "Services"
             name: "services"
             widget: "list"
             fields:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
+          - { label: "Pricing Headline", name: "pricing_headline", widget: "string" }
+          - { label: "Pricing Subtitle", name: "pricing_subtitle", widget: "text" }
           - label: "Pricing Plans"
             name: "pricing"
             widget: "list"
@@ -116,12 +120,7 @@ collections:
               - { label: "Name", name: "name", widget: "string" }
               - { label: "Price", name: "price", widget: "string" }
               - { label: "Description", name: "description", widget: "string", required: false }
-              - label: "Features"
-                name: "features"
-                widget: "list"
-                required: false
-                fields:
-                  - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Features (one per line)", name: "features", widget: "text", required: false, hint: "Enter each feature on a new line" }
               - { label: "Highlighted", name: "highlighted", widget: "boolean", default: false }
       - name: "ru"
         label: "Russian"
@@ -140,12 +139,16 @@ collections:
           - { label: "About Headline", name: "about_headline", widget: "string" }
           - { label: "About Text", name: "about_text", widget: "text" }
           - { label: "About Image", name: "about_image", widget: "image", required: false }
+          - { label: "Services Headline", name: "services_headline", widget: "string" }
+          - { label: "Services Subtitle", name: "services_subtitle", widget: "text" }
           - label: "Services"
             name: "services"
             widget: "list"
             fields:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
+          - { label: "Pricing Headline", name: "pricing_headline", widget: "string" }
+          - { label: "Pricing Subtitle", name: "pricing_subtitle", widget: "text" }
           - label: "Pricing Plans"
             name: "pricing"
             widget: "list"
@@ -154,12 +157,7 @@ collections:
               - { label: "Name", name: "name", widget: "string" }
               - { label: "Price", name: "price", widget: "string" }
               - { label: "Description", name: "description", widget: "string", required: false }
-              - label: "Features"
-                name: "features"
-                widget: "list"
-                required: false
-                fields:
-                  - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Features (one per line)", name: "features", widget: "text", required: false, hint: "Enter each feature on a new line" }
               - { label: "Highlighted", name: "highlighted", widget: "boolean", default: false }
 
   # ─── Taxes site pages (Landing, Pricing, FAQ, Contact) ───

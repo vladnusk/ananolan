@@ -26,8 +26,18 @@
   "contact": {
     "title": "Связаться с нами",
     "name": "Имя",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "firstNamePlaceholder": "например, Иван",
+    "lastNamePlaceholder": "например, Петров",
     "email": "Email",
+    "emailPlaceholder": "например, ivan@example.com",
+    "phone": "Телефон",
+    "phonePlaceholder": "например, +7 (999) 123-45-67",
     "message": "Сообщение",
+    "messagePlaceholder": "Опишите ваши налоговые задачи...",
+    "service": "Услуга",
+    "servicePlaceholder": "Выберите услугу",
     "submit": "Отправить",
     "sending": "Отправка…",
     "success": "Спасибо, ваше сообщение отправлено.",
@@ -43,6 +53,9 @@
     "pricingLabel": "Цены",
     "contactLabel": "Контакты",
     "contactSubtitle": "Напишите нам для бесплатной консультации или расчёта.",
-    "popular": "Популярный"
+    "popular": "Популярный",
+    "learnMore": "Подробнее",
+    "contactSectionTitle": "Свяжитесь с нами",
+    "contactSectionSubtitle": "Готовы начать? Свяжитесь с нами для бесплатной консультации."
   }
 }

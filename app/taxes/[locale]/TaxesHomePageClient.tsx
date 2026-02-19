@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ContactForm } from "@/components/ContactForm";
+import { Icon, type IconName } from "@/components/Icon";
+import { SectionBadge } from "@/components/SectionBadge";
 
 type Highlight = { text: string };
 type Service = { title: string; description: string };
@@ -10,12 +12,21 @@ type PricingPlan = {
   name: string;
   price: string;
   description?: string;
-  features?: string[] | { feature?: string }[];
+  /** Newline-separated string (CMS) or legacy array of strings/objects */
+  features?: string | string[] | { feature?: string }[];
   highlighted?: boolean;
 };
 
 function featureText(f: string | { feature?: string }): string {
   return typeof f === "string" ? f : f?.feature ?? "";
+}
+
+function getPricingFeatures(features: PricingPlan["features"]): string[] {
+  if (!features) return [];
+  if (typeof features === "string") {
+    return features.split("\n").map((s) => s.trim()).filter(Boolean);
+  }
+  return features.map((f) => featureText(f));
 }
 
 interface TaxesHomePageClientProps {
@@ -29,11 +40,16 @@ interface TaxesHomePageClientProps {
   aboutHeadline: string;
   aboutText: string;
   aboutImage?: string;
+  servicesHeadline: string;
+  servicesSubtitle: string;
   services: Service[];
+  pricingHeadline: string;
+  pricingSubtitle: string;
   pricing: PricingPlan[];
 }
 
 export function TaxesHomePageClient({
+  locale,
   heroTitle,
   heroSubtitle,
   heroImage,
@@ -43,7 +59,11 @@ export function TaxesHomePageClient({
   aboutHeadline,
   aboutText,
   aboutImage,
+  servicesHeadline,
+  servicesSubtitle,
   services,
+  pricingHeadline,
+  pricingSubtitle,
   pricing,
 }: TaxesHomePageClientProps) {
   const t = useTranslations("taxesHome");
@@ -96,19 +116,30 @@ export function TaxesHomePageClient({
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="sr-only">{t("highlightsLabel")}</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {highlights.map((h, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-4 rounded-xl bg-taxes-gray-100/80 p-5"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-taxes-cyan/15 text-taxes-cyan">
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </span>
-                <span className="font-medium text-taxes-gray-900">{h.text}</span>
-              </div>
-            ))}
+            {highlights.map((h, i) => {
+              const HIGHLIGHT_ICONS: IconName[] = [
+                "file",
+                "globe",
+                "globe",
+                "headphones",
+              ];
+              const iconName = HIGHLIGHT_ICONS[i] ?? "file";
+              return (
+                <div
+                  key={i}
+                  className="flex flex-col items-center gap-4 rounded-xl bg-taxes-gray-100/80 p-8 text-center"
+                >
+                  <Icon
+                    name={iconName}
+                    size={24}
+                    shape="circle"
+                    color="taxes-white"
+                    wrapperColor="taxes-cyan"
+                  />
+                  <span className="font-medium text-taxes-gray-900">{h.text}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -116,9 +147,7 @@ export function TaxesHomePageClient({
       {/* Intro */}
       <section className="bg-taxes-gray-100 py-16">
         <div className="mx-auto max-w-3xl px-4 text-center">
-          <p className="text-sm font-semibold uppercase tracking-wider text-taxes-cyan">
-            {t("introLabel")}
-          </p>
+          <SectionBadge>{t("introLabel")}</SectionBadge>
           <h2 className="mt-2 text-3xl font-bold text-taxes-gray-900 md:text-4xl">
             {introHeadline}
           </h2>
@@ -147,9 +176,7 @@ export function TaxesHomePageClient({
             )}
           </div>
           <div className="flex flex-col justify-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-taxes-cyan">
-              {t("aboutLabel")}
-            </p>
+            <SectionBadge className="self-start">{t("aboutLabel")}</SectionBadge>
             <h2 className="mt-2 text-3xl font-bold text-taxes-gray-900 md:text-4xl">
               {aboutHeadline}
             </h2>
@@ -162,48 +189,68 @@ export function TaxesHomePageClient({
 
       {/* Services */}
       <section id="services" className="scroll-mt-20 border-t border-taxes-gray-200 bg-taxes-gray-100 py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <p className="text-sm font-semibold uppercase tracking-wider text-taxes-cyan">
-            {t("servicesLabel")}
-          </p>
+        <div className="mx-auto max-w-6xl px-4 text-center">
+          <SectionBadge>{t("servicesLabel")}</SectionBadge>
           <h2 className="mt-2 text-3xl font-bold text-taxes-gray-900 md:text-4xl">
-            Comprehensive Tax Solutions
+            {servicesHeadline}
           </h2>
-          <p className="mt-3 max-w-2xl text-taxes-gray-600">
-            Professional services to keep you compliant and confident.
+          <p className="mx-auto mt-3 max-w-2xl text-taxes-gray-600">
+            {servicesSubtitle}
           </p>
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((s, i) => (
-              <div
-                key={i}
-                className="flex flex-col rounded-xl border border-taxes-gray-200 bg-taxes-white p-6 shadow-sm transition hover:shadow-md"
-              >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-taxes-cyan/15 text-taxes-cyan">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((s, i) => {
+              const SERVICE_ICONS: IconName[] = [
+                "building", // Business Registration
+                "chart", // Business Tax Returns
+                "person", // Individual Tax Filing
+                "chart", // Bookkeeping Services
+                "calendar", // Tax Planning
+                "chart", // Cryptocurrency Tax Services
+                "globe", // Non-Resident Tax Services
+                "clock", // Sales & Payroll Taxes
+              ];
+              const iconName = SERVICE_ICONS[i] ?? "file";
+              return (
+                <div
+                  key={i}
+                  className="flex flex-col rounded-xl border border-taxes-gray-200 bg-taxes-white p-6 text-left shadow-sm transition hover:shadow-md"
+                >
+                  <Icon
+                    name={iconName}
+                    size={24}
+                    shape="square"
+                    color="taxes-white"
+                    wrapperColor="taxes-cyan"
+                  />
+                  <h3 className="mt-3 font-semibold tracking-tight text-taxes-gray-900">{s.title}</h3>
+                  <p className="mt-2 flex-1 text-left text-sm text-taxes-gray-600">{s.description}</p>
+                  <a
+                    href={locale === "ru" ? "/ru/services" : "/services"}
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-taxes-cyan hover:text-taxes-cyan-light"
+                  >
+                    {t("learnMore")}
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </a>
                 </div>
-                <h3 className="font-semibold text-taxes-gray-900">{s.title}</h3>
-                <p className="mt-2 flex-1 text-sm text-taxes-gray-600">{s.description}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Pricing */}
       <section className="border-t border-taxes-gray-200 bg-taxes-white py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <p className="text-sm font-semibold uppercase tracking-wider text-taxes-cyan">
-            {t("pricingLabel")}
-          </p>
+        <div className="mx-auto max-w-6xl px-4 text-center">
+          <SectionBadge>{t("pricingLabel")}</SectionBadge>
           <h2 className="mt-2 text-3xl font-bold text-taxes-gray-900 md:text-4xl">
-            Transparent & Affordable Pricing
+            {pricingHeadline}
           </h2>
-          <p className="mt-3 max-w-2xl text-taxes-gray-600">
-            Clear pricing for individuals and businesses. No hidden fees.
+          <p className="mx-auto mt-3 max-w-2xl text-taxes-gray-600">
+            {pricingSubtitle}
           </p>
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
             {pricing.map((plan, i) => (
               <div
                 key={i}
@@ -230,11 +277,11 @@ export function TaxesHomePageClient({
                   </p>
                 )}
                 <ul className="mt-6 flex-1 space-y-2">
-                  {(plan.features ?? []).map((f, j) => (
+                  {getPricingFeatures(plan.features).map((f, j) => (
                     <li key={j} className="flex items-start gap-2 text-sm">
                       <span className={plan.highlighted ? "text-taxes-white" : "text-taxes-cyan"} aria-hidden>✓</span>
                       <span className={plan.highlighted ? "text-taxes-white/90" : "text-taxes-gray-600"}>
-                        {featureText(f)}
+                        {f}
                       </span>
                     </li>
                   ))}
@@ -257,13 +304,37 @@ export function TaxesHomePageClient({
 
       {/* Contact + Form */}
       <section id="contact-form" className="scroll-mt-20 border-t border-taxes-gray-200 bg-taxes-gray-100 py-16">
-        <div className="mx-auto max-w-2xl px-4">
-          <h2 className="text-2xl font-bold text-taxes-gray-900 md:text-3xl">
-            {t("contactLabel")}
-          </h2>
-          <p className="mt-2 text-taxes-gray-600">{t("contactSubtitle")}</p>
-          <div className="mt-8">
-            <ContactForm />
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 md:grid-cols-2 md:gap-16">
+          <div className="flex flex-col justify-center">
+            <h2 className="text-2xl font-bold text-taxes-gray-900 md:text-3xl">
+              {t("contactSectionTitle")}
+            </h2>
+            <p className="mt-2 text-taxes-gray-600">
+              {t("contactSectionSubtitle")}
+            </p>
+            <div className="mt-8 space-y-4">
+              <a
+                href="tel:+19176356138"
+                className="flex items-center gap-3 text-taxes-gray-700 hover:text-taxes-cyan"
+              >
+                <Icon name="phone" size={24} shape="square" color="taxes-white" wrapperColor="taxes-cyan" />
+                <span>917-635-6138</span>
+              </a>
+              <div className="flex items-center gap-3 text-taxes-gray-700">
+                <Icon name="location-pin" size={24} shape="square" color="taxes-white" wrapperColor="taxes-cyan" />
+                <span>Miami, FL</span>
+              </div>
+              <a
+                href="mailto:info@ananolan.com"
+                className="flex items-center gap-3 text-taxes-gray-700 hover:text-taxes-cyan"
+              >
+                <Icon name="email" size={24} shape="square" color="taxes-white" wrapperColor="taxes-cyan" />
+                <span>info@ananolan.com</span>
+              </a>
+            </div>
+          </div>
+          <div>
+            <ContactForm variant="lead" />
           </div>
         </div>
       </section>

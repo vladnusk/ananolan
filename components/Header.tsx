@@ -95,7 +95,7 @@ export function Header({ isTaxesSite, locale }: HeaderProps) {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 md:flex-nowrap">
         {isTaxesSite ? (
           <NextLink href={`/taxes/${locale}`} className={`text-xl ${logoClass}`}>
-            Ana Nolan Taxes
+            A.Nolan Tax Expert
           </NextLink>
         ) : (
           <Link href="/" className={`text-xl font-semibold ${logoClass}`}>

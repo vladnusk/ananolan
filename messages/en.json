@@ -26,8 +26,18 @@
   "contact": {
     "title": "Contact Us",
     "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "firstNamePlaceholder": "e.g. John",
+    "lastNamePlaceholder": "e.g. Smith",
     "email": "Email",
+    "emailPlaceholder": "e.g. john@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "e.g. (555) 123-4567",
     "message": "Message",
+    "messagePlaceholder": "Tell us about your tax needs...",
+    "service": "Service",
+    "servicePlaceholder": "Select a service",
     "submit": "Send message",
     "sending": "Sending…",
     "success": "Thanks, your message was sent.",
@@ -43,6 +53,9 @@
     "pricingLabel": "Pricing",
     "contactLabel": "Contact",
     "contactSubtitle": "Reach out for a free consultation or quote.",
-    "popular": "Popular"
+    "popular": "Popular",
+    "learnMore": "Learn more",
+    "contactSectionTitle": "Get In Touch",
+    "contactSectionSubtitle": "Ready to get started? Contact us today for a free consultation."
   }
 }
