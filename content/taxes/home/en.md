@@ -31,32 +31,6 @@ about_text: >
 about_image: /uploads/ana-portrait.png
 services_headline: Comprehensive Tax Solutions
 services_subtitle: Professional services to keep you compliant and confident.
-services:
-  - title: Business Registration
-    description: Start your U.S. business with confidence. We help you register LLCs
-      and corporations, obtain EIN numbers, and ensure full compliance from day
-      one.
-  - title: Business Tax Returns
-    description: Accurate preparation and filing for LLCs, S-Corps, and C-Corps. We
-      help minimize tax liability and keep your business compliant.
-  - title: Individual Tax Filing
-    description: Professional tax preparation for individuals in all 50 states. We
-      maximize deductions and ensure accurate filing.
-  - title: Bookkeeping Services
-    description: Stay organized with professional bookkeeping, financial reports,
-      and ongoing support for your business.
-  - title: Tax Planning
-    description: Strategic tax planning to help you legally reduce taxes and improve
-      your financial results.
-  - title: Cryptocurrency Tax Services
-    description: Accurate reporting of crypto trading, investing, staking, and
-      mining to ensure full IRS compliance.
-  - title: Non-Resident Tax Services
-    description: Specialized tax services for non-U.S. residents, foreign business
-      owners, and new immigrants.
-  - title: Sales & Payroll Taxes
-    description: Complete management of payroll taxes and sales tax filings to keep
-      your business compliant.
 pricing_headline: Transparent & Affordable Pricing
 pricing_subtitle: Clear pricing for individuals and businesses. No hidden fees.
 faq_headline: Frequently Asked Questions

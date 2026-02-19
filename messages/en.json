@@ -8,6 +8,7 @@
   },
   "taxesNav": {
     "home": "Home",
+    "whatWeDo": "What We Do",
     "services": "Services",
     "pricing": "Pricing",
     "faq": "FAQ",
@@ -56,7 +57,15 @@
     "contactSubtitle": "Reach out for a free consultation or quote.",
     "popular": "Popular",
     "learnMore": "Learn more",
+    "viewAllServices": "View All Services",
     "contactSectionTitle": "Get In Touch",
     "contactSectionSubtitle": "Ready to get started? Contact us today for a free consultation."
+  },
+  "taxesServices": {
+    "pageTitle": "Our Services",
+    "pageSubtitle": "Professional tax and accounting services tailored to your needs.",
+    "fromPrice": "from",
+    "backToServices": "Back to services",
+    "getInTouch": "Get in touch"
   }
 }

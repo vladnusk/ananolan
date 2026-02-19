@@ -19,6 +19,14 @@ export interface BlogFrontmatter extends PageFrontmatter {
   image?: string;
 }
 
+/** Taxes service (CMS-editable, shared between main page and services pages). */
+export interface TaxesServiceFrontmatter {
+  title: string;
+  short_description: string;
+  price?: string;
+  show_on_main?: boolean;
+}
+
 /** Taxes homepage structured content (CMS-editable). */
 export interface TaxesHomeFrontmatter {
   hero_title: string;
@@ -32,7 +40,6 @@ export interface TaxesHomeFrontmatter {
   about_image?: string;
   services_headline?: string;
   services_subtitle?: string;
-  services: { title: string; description: string }[];
   pricing_headline?: string;
   pricing_subtitle?: string;
   faq_headline?: string;
@@ -147,7 +154,74 @@ export const getSlugs = cache(
 );
 
 const TAXES_HOME_DIR = path.join(CONTENT_DIR, "taxes", "home");
+const TAXES_SERVICES_DIR = path.join(CONTENT_DIR, "taxes", "services");
 const BUSINESS_CARD_DIR = path.join(CONTENT_DIR, "main", "business-card");
+
+export interface TaxesServiceDoc {
+  slug: string;
+  frontmatter: TaxesServiceFrontmatter;
+  content: string;
+}
+
+/**
+ * List all taxes services for a locale.
+ * @param mainOnly - If true, only return services with show_on_main
+ */
+export const getTaxesServices = cache(
+  async (
+    locale: Locale,
+    mainOnly = false
+  ): Promise<TaxesServiceDoc[]> => {
+    const dir = path.join(TAXES_SERVICES_DIR, locale);
+    try {
+      const files = fs.readdirSync(dir);
+      const slugs = files
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => f.replace(/\.md$/, ""));
+      const docs: TaxesServiceDoc[] = [];
+      for (const slug of slugs) {
+        const doc = await getTaxesServiceBySlug(locale, slug);
+        if (doc) {
+          if (mainOnly && !doc.frontmatter.show_on_main) continue;
+          docs.push(doc);
+        }
+      }
+      return docs;
+    } catch {
+      if (locale !== DEFAULT_LOCALE) {
+        return getTaxesServices(DEFAULT_LOCALE, mainOnly);
+      }
+      return [];
+    }
+  }
+);
+
+/**
+ * Get a single taxes service by slug.
+ */
+export const getTaxesServiceBySlug = cache(
+  async (
+    locale: Locale,
+    slug: string
+  ): Promise<TaxesServiceDoc | null> => {
+    const filePath = path.join(TAXES_SERVICES_DIR, locale, `${slug}.md`);
+    try {
+      const raw = fs.readFileSync(filePath, "utf-8");
+      const parsed = matter(raw);
+      const data = parsed.data as TaxesServiceFrontmatter;
+      return {
+        slug,
+        frontmatter: data,
+        content: parsed.content,
+      };
+    } catch {
+      if (locale !== DEFAULT_LOCALE) {
+        return getTaxesServiceBySlug(DEFAULT_LOCALE, slug);
+      }
+      return null;
+    }
+  }
+);
 
 /** Business card homepage (main domain). English only. */
 export interface BusinessCardFrontmatter {

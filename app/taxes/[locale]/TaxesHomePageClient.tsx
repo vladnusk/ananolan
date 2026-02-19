@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import NextLink from "next/link";
 import { useTranslations } from "next-intl";
 import { ContactForm } from "@/components/ContactForm";
 import { Icon, type IconName } from "@/components/Icon";
 import { SectionBadge } from "@/components/SectionBadge";
+import type { TaxesServiceDoc } from "@/lib/content";
 
 type Highlight = { text: string };
-type Service = { title: string; description: string };
 type PricingPlan = {
   name: string;
   price: string;
@@ -43,7 +44,7 @@ interface TaxesHomePageClientProps {
   aboutImage?: string;
   servicesHeadline: string;
   servicesSubtitle: string;
-  services: Service[];
+  services: TaxesServiceDoc[];
   pricingHeadline: string;
   pricingSubtitle: string;
   pricing: PricingPlan[];
@@ -218,9 +219,10 @@ export function TaxesHomePageClient({
                 "clock", // Sales & Payroll Taxes
               ];
               const iconName = SERVICE_ICONS[i] ?? "file";
+              const serviceHref = locale === "ru" ? `/ru/services/${s.slug}` : `/services/${s.slug}`;
               return (
                 <div
-                  key={i}
+                  key={s.slug}
                   className="flex flex-col rounded-xl border border-taxes-gray-200 bg-taxes-white p-6 text-left shadow-sm transition hover:shadow-md"
                 >
                   <Icon
@@ -230,21 +232,27 @@ export function TaxesHomePageClient({
                     color="taxes-white"
                     wrapperColor="taxes-cyan"
                   />
-                  <h3 className="mt-3 font-semibold tracking-tight text-taxes-gray-900">{s.title}</h3>
-                  <p className="mt-2 flex-1 text-left text-sm text-taxes-gray-600">{s.description}</p>
-                  <a
-                    href={locale === "ru" ? "/ru/services" : "/services"}
+                  <h3 className="mt-3 font-semibold tracking-tight text-taxes-gray-900">{s.frontmatter.title}</h3>
+                  <p className="mt-2 flex-1 text-left text-sm text-taxes-gray-600">{s.frontmatter.short_description}</p>
+                  <NextLink
+                    href={serviceHref}
                     className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-taxes-cyan hover:text-taxes-cyan-light"
                   >
                     {t("learnMore")}
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </a>
+                  </NextLink>
                 </div>
               );
             })}
           </div>
+          <NextLink
+            href={locale === "ru" ? "/ru/services" : "/services"}
+            className="mt-10 inline-flex rounded-lg border-2 border-taxes-cyan bg-transparent px-6 py-3 font-medium text-taxes-cyan hover:bg-taxes-cyan/5"
+          >
+            {t("viewAllServices")}
+          </NextLink>
         </div>
       </section>
 

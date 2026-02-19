@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTaxesHome } from "@/lib/content";
+import { getTaxesHome, getTaxesServices } from "@/lib/content";
 import { TaxesHomePageClient } from "./TaxesHomePageClient";
 import type { Locale } from "@/lib/constants";
 
@@ -27,16 +27,7 @@ const DEFAULT_HOME = {
     "Founded by Anastasia Nolan, Certified Tax Preparer and QuickBooks ProAdvisor, our firm provides professional tax and accounting services for clients across the United States.\n\nWe specialize in helping Russian-speaking individuals, business owners, and non-residents navigate U.S. tax regulations with confidence.\n\nOur fully online services make working with us simple, secure, and convenient — no matter where you are located.",
   services_headline: "Comprehensive Tax Solutions",
   services_subtitle: "Professional services to keep you compliant and confident.",
-  services: [
-    { title: "Business Registration", description: "Start your U.S. business with confidence. We help you register LLCs and corporations, obtain EIN numbers, and ensure full compliance from day one." },
-    { title: "Business Tax Returns", description: "Accurate preparation and filing for LLCs, S-Corps, and C-Corps. We help minimize tax liability and keep your business compliant." },
-    { title: "Individual Tax Filing", description: "Professional tax preparation for individuals in all 50 states. We maximize deductions and ensure accurate filing." },
-    { title: "Bookkeeping Services", description: "Stay organized with professional bookkeeping, financial reports, and ongoing support for your business." },
-    { title: "Tax Planning", description: "Strategic tax planning to help you legally reduce taxes and improve your financial results." },
-    { title: "Cryptocurrency Tax Services", description: "Accurate reporting of crypto trading, investing, staking, and mining to ensure full IRS compliance." },
-    { title: "Non-Resident Tax Services", description: "Specialized tax services for non-U.S. residents, foreign business owners, and new immigrants." },
-    { title: "Sales & Payroll Taxes", description: "Complete management of payroll taxes and sales tax filings to keep your business compliant." },
-  ],
+  services: [],
   pricing_headline: "Transparent & Affordable Pricing",
   pricing_subtitle: "Clear pricing for individuals and businesses. No hidden fees.",
   faq_headline: "Frequently Asked Questions",
@@ -62,6 +53,7 @@ export default async function TaxesLandingPage({ params }: Props) {
   const heroImage = doc?.frontmatter?.hero_image;
   const aboutImage = doc?.frontmatter?.about_image;
   const pricing = data.pricing ?? DEFAULT_HOME.pricing;
+  const services = await getTaxesServices(locale as Locale, true);
 
   // Fallback to defaults when CMS-saved content has empty/missing text
   const heroTitle = (data.hero_title ?? DEFAULT_HOME.hero_title) || DEFAULT_HOME.hero_title;
@@ -85,7 +77,7 @@ export default async function TaxesLandingPage({ params }: Props) {
       aboutImage={aboutImage}
       servicesHeadline={data.services_headline ?? DEFAULT_HOME.services_headline}
       servicesSubtitle={data.services_subtitle ?? DEFAULT_HOME.services_subtitle}
-      services={data.services ?? DEFAULT_HOME.services}
+      services={services}
       pricingHeadline={data.pricing_headline ?? DEFAULT_HOME.pricing_headline}
       pricingSubtitle={data.pricing_subtitle ?? DEFAULT_HOME.pricing_subtitle}
       pricing={pricing}

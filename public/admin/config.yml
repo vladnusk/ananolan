@@ -31,7 +31,7 @@ collections:
         label: "English"
         file: "content/main/business-card/en.md"
         extension: "md"
-        format: "frontmatter_markdown"
+        format: "yaml-frontmatter"
         fields:
           - { label: "Name", name: "name", widget: "string" }
           - { label: "Subtitle", name: "subtitle", widget: "string" }
@@ -73,7 +73,7 @@ collections:
     create: true
     slug: "{{slug}}"
     extension: "md"
-    format: "frontmatter_markdown"
+    format: "yaml-frontmatter"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "string", required: false }
@@ -88,7 +88,7 @@ collections:
     create: true
     slug: "{{slug}}"
     extension: "md"
-    format: "frontmatter_markdown"
+    format: "yaml-frontmatter"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "string", required: false }
@@ -120,12 +120,6 @@ collections:
           - { label: "About Image", name: "about_image", widget: "image", required: false }
           - { label: "Services Headline", name: "services_headline", widget: "string" }
           - { label: "Services Subtitle", name: "services_subtitle", widget: "text" }
-          - label: "Services"
-            name: "services"
-            widget: "list"
-            fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
           - { label: "Pricing Headline", name: "pricing_headline", widget: "string" }
           - { label: "Pricing Subtitle", name: "pricing_subtitle", widget: "text" }
           - { label: "FAQ Headline", name: "faq_headline", widget: "string" }
@@ -166,12 +160,6 @@ collections:
           - { label: "About Image", name: "about_image", widget: "image", required: false }
           - { label: "Services Headline", name: "services_headline", widget: "string" }
           - { label: "Services Subtitle", name: "services_subtitle", widget: "text" }
-          - label: "Services"
-            name: "services"
-            widget: "list"
-            fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
           - { label: "Pricing Headline", name: "pricing_headline", widget: "string" }
           - { label: "Pricing Subtitle", name: "pricing_subtitle", widget: "text" }
           - { label: "FAQ Headline", name: "faq_headline", widget: "string" }
@@ -194,29 +182,32 @@ collections:
               - { label: "Features (one per line)", name: "features", widget: "text", required: false, hint: "Enter each feature on a new line" }
               - { label: "Highlighted", name: "highlighted", widget: "boolean", default: false }
 
-  # ─── Taxes site pages (Landing, Pricing, FAQ, Contact) ───
-  - name: "taxes_pages_en"
-    label: "Taxes Pages (English)"
-    folder: "content/taxes/pages/en"
+  # ─── Taxes site services (shared: main page + services list) ───
+  - name: "taxes_services_en"
+    label: "Taxes Services (English)"
+    folder: "content/taxes/services/en"
     create: true
     slug: "{{slug}}"
     extension: "md"
-    format: "frontmatter_markdown"
+    format: "yaml-frontmatter"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "string", required: false }
-      - { label: "Layout", name: "layout", widget: "string", required: false }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Short Description", name: "short_description", widget: "text", hint: "Shown on main page and services list" }
+      - { label: "Full Description", name: "body", widget: "markdown", hint: "Shown on service detail page" }
+      - { label: "Price (from)", name: "price", widget: "string", hint: "e.g. $99 or $150/mo - price may be higher" }
+      - { label: "Show on Main Page", name: "show_on_main", widget: "boolean", default: true }
 
-  - name: "taxes_pages_ru"
-    label: "Taxes Pages (Russian)"
-    folder: "content/taxes/pages/ru"
+  - name: "taxes_services_ru"
+    label: "Taxes Services (Russian)"
+    folder: "content/taxes/services/ru"
     create: true
     slug: "{{slug}}"
     extension: "md"
-    format: "frontmatter_markdown"
+    format: "yaml-frontmatter"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "string", required: false }
-      - { label: "Layout", name: "layout", widget: "string", required: false }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Short Description", name: "short_description", widget: "text", hint: "Shown on main page and services list" }
+      - { label: "Full Description", name: "body", widget: "markdown", hint: "Shown on service detail page" }
+      - { label: "Price (from)", name: "price", widget: "string", hint: "e.g. $99 or $150/mo - price may be higher" }
+      - { label: "Show on Main Page", name: "show_on_main", widget: "boolean", default: true }
+

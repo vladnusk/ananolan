@@ -8,7 +8,8 @@
   },
   "taxesNav": {
     "home": "Главная",
-    "services": "Услуги",
+    "whatWeDo": "Направления",
+    "services": "Все услуги",
     "pricing": "Цены",
     "faq": "Вопросы",
     "contact": "Контакты"
@@ -56,7 +57,15 @@
     "contactSubtitle": "Напишите нам для бесплатной консультации или расчёта.",
     "popular": "Популярный",
     "learnMore": "Подробнее",
+    "viewAllServices": "Все услуги",
     "contactSectionTitle": "Свяжитесь с нами",
     "contactSectionSubtitle": "Готовы начать? Свяжитесь с нами для бесплатной консультации."
+  },
+  "taxesServices": {
+    "pageTitle": "Наши услуги",
+    "pageSubtitle": "Профессиональные налоговые и бухгалтерские услуги под ваши задачи.",
+    "fromPrice": "от",
+    "backToServices": "Назад к услугам",
+    "getInTouch": "Связаться с нами"
   }
 }

@@ -14,10 +14,11 @@ const MAIN_PATHS = [
   { key: "blog", href: "/blog" },
 ];
 
-// All sections anchored on home page (taxes subdomain uses / or /ru, no /en)
+// All sections anchored on home page; services links to /services list page
 const TAXES_PATHS = [
   { key: "home", href: "/", sectionId: null },
-  { key: "services", href: "/#services", sectionId: "services" },
+  { key: "whatWeDo", href: "/#services", sectionId: "services" },
+  { key: "services", href: "/services", sectionId: null, isPageLink: true },
   { key: "pricing", href: "/#pricing", sectionId: "pricing" },
   { key: "faq", href: "/#faq", sectionId: "faq" },
   { key: "contact", href: "/#contact-form", sectionId: "contact-form" },
@@ -38,6 +39,12 @@ function taxesHref(href: string, locale: string): string {
   return ruPath + hash;
 }
 
+/** True when we're on taxes home (pathname can be rewritten to /taxes/en or /taxes/ru). */
+function isOnTaxesHome(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return pathname === "/" || pathname === "/ru" || pathname === "/taxes/en" || pathname === "/taxes/ru";
+}
+
 function NavLinks({
   isTaxesSite,
   locale,
@@ -45,6 +52,7 @@ function NavLinks({
   activeSection,
   t,
   mobile = false,
+  onNavigate,
 }: {
   isTaxesSite: boolean;
   locale: string;
@@ -52,6 +60,7 @@ function NavLinks({
   activeSection: string | null;
   t: (key: string) => string;
   mobile?: boolean;
+  onNavigate?: () => void;
 }) {
   const links = isTaxesSite ? TAXES_PATHS : MAIN_PATHS;
   const baseClass = mobile
@@ -66,9 +75,15 @@ function NavLinks({
         const key = item.key;
         const href = "sectionId" in item ? item.href : item.href;
         const sectionId = "sectionId" in item ? item.sectionId : null;
+        const isPageLink = "isPageLink" in item && item.isPageLink;
         const fullHref = isTaxesSite ? taxesHref(href, locale) : href;
+        const onTaxesHome = isOnTaxesHome(fullPathname);
         const isActive = isTaxesSite
-          ? (sectionId === null && activeSection === null) || (sectionId !== null && activeSection === sectionId)
+          ? isPageLink
+            ? fullPathname?.includes("/services") ?? false
+            : key === "home"
+              ? onTaxesHome && activeSection === null
+              : onTaxesHome && sectionId !== null && activeSection === sectionId
           : fullPathname === fullHref ||
             (href !== "/" && !href.startsWith("#") && fullPathname?.startsWith(fullHref + "/"));
         const activeUnderline = isTaxesSite && isActive && !mobile
@@ -80,9 +95,24 @@ function NavLinks({
           ? `${baseClass} ${isActive ? (isTaxesSite ? "bg-taxes-gray-100 text-taxes-cyan" : "bg-slate-100 text-brand-primary") : ""}`
           : `${baseClass} ${isActive ? (isTaxesSite ? "text-taxes-cyan " + activeUnderline : "text-brand-primary " + activeUnderline) : ""}`;
 
+        const handleClick = () => onNavigate?.();
+
         if (isTaxesSite) {
+          const isHashLink = fullHref.includes("#");
+          if (isHashLink) {
+            return (
+              <a
+                key={key}
+                href={fullHref}
+                className={linkClass}
+                onClick={handleClick}
+              >
+                {t(key as "home")}
+              </a>
+            );
+          }
           return (
-            <NextLink key={key} href={fullHref} className={linkClass}>
+            <NextLink key={key} href={fullHref} className={linkClass} onClick={handleClick}>
               {t(key as "home")}
             </NextLink>
           );
@@ -99,45 +129,55 @@ function NavLinks({
 
 const TAXES_SECTION_IDS = ["services", "pricing", "faq", "contact-form"] as const;
 
+/** Viewport Y (from top) used to decide which section is active. Just below fixed header. */
+const SECTION_TRIGGER_Y = 120;
+
+/** Active section = last one (in DOM order) whose top has crossed above the trigger line. */
+function getActiveSection(): string | null {
+  let active: string | null = null;
+  for (const id of TAXES_SECTION_IDS) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const rect = el.getBoundingClientRect();
+    if (rect.top <= SECTION_TRIGGER_Y) active = id;
+  }
+  return active;
+}
+
 export function Header({ isTaxesSite, locale }: HeaderProps) {
   const t = useTranslations(isTaxesSite ? "taxesNav" : "nav");
   const fullPathname = useNextPathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  const isTaxesHome = isTaxesSite && (fullPathname === "/" || fullPathname === "/ru");
+  const isTaxesHome = isTaxesSite && isOnTaxesHome(fullPathname);
   const logoHref = isTaxesSite ? (locale === "ru" ? "/ru" : "/") : "/";
 
   useEffect(() => {
-    if (!isTaxesHome) return;
-    const observers: IntersectionObserver[] = [];
-    const margin = "0px 0px -50% 0px";
-    TAXES_SECTION_IDS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) setActiveSection(id);
-          });
-        },
-        { rootMargin: margin, threshold: 0 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    const topObs = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) setActiveSection(null);
-      },
-      { rootMargin: "0px 0px -99% 0px", threshold: 0 }
-    );
-    const hero = document.getElementById("hero");
-    if (hero) {
-      topObs.observe(hero);
-      observers.push(topObs);
+    if (!isTaxesHome) {
+      setActiveSection(null);
+      return;
     }
-    return () => observers.forEach((o) => o.disconnect());
+    const update = () => setActiveSection(getActiveSection());
+    update();
+    let rafId: number | null = null;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      rafId = requestAnimationFrame(() => {
+        update();
+        ticking = false;
+        rafId = null;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const hashCheck = setInterval(update, 150);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      clearInterval(hashCheck);
+    };
   }, [isTaxesHome]);
 
   const headerBg = isTaxesSite ? "bg-taxes-white border-taxes-gray-200" : "bg-white/95 border-slate-200";
@@ -205,6 +245,7 @@ export function Header({ isTaxesSite, locale }: HeaderProps) {
               activeSection={isTaxesHome ? activeSection : null}
               t={t}
               mobile
+              onNavigate={() => setMobileOpen(false)}
             />
           </nav>
         </div>
