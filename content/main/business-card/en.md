@@ -12,11 +12,11 @@ phone: +1 (555) 123-4567
 location: Hallandale Beach, FL 33009
 social_links:
   - platform: linkedin
-    url: https://linkedin.com/in/example
+    url: https://www.linkedin.com/in/anoskova
   - platform: facebook
-    url: https://facebook.com/example
+    url: https://facebook.com/anastasia.noskova.162669
   - platform: instagram
-    url: https://instagram.com/example
+    url: https://instagram.com/anoskova73
 taxes_promo_title: Need Expert Tax Advice?
 taxes_promo_subtitle: Visit my comprehensive tax consulting platform for
   in-depth resources, calculators, and personalized consultation services.
