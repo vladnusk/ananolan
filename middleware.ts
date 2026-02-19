@@ -3,11 +3,11 @@ import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "@/i18n/routing";
 import { isTaxesSite } from "@/lib/constants";
 
-const intlMiddleware = createIntlMiddleware(routing);
+const intlMiddleware = createIntlMiddleware(routing, { localeDetection: false });
 
 /**
  * Host-based routing and i18n:
- * - taxes.ananolan.com/* → internal /taxes/[locale]/*
+ * - taxes.ananolan.com/* (prod) or taxes.ananolan.local/* (local dev) → internal /taxes/[locale]/*
  * - ananolan.com/* → standard next-intl (locale as-needed: / for en, /ru for ru)
  */
 export default function middleware(req: NextRequest) {
@@ -48,6 +48,13 @@ export default function middleware(req: NextRequest) {
   }
   if (pathname.startsWith("/admin/")) {
     return NextResponse.next();
+  }
+
+  // Main site: redirect /ru and /ru/ to / (business card is English-only)
+  if (!isTaxesSite(host) && (pathname === "/ru" || pathname === "/ru/")) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
   }
 
   if (isTaxesSite(host)) {

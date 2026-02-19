@@ -25,7 +25,8 @@ npm run dev
 ```
 
 - Main site: **http://localhost:3000**
-- Taxes site: add to `/etc/hosts`: `127.0.0.1 taxes.ananolan.com` then open **http://taxes.ananolan.com:3000**
+- Taxes site: add to `/etc/hosts`: `127.0.0.1 taxes.ananolan.local` then open **http://taxes.ananolan.local:3000**  
+  (Uses a separate local domain so `taxes.ananolan.com` stays resolvable to production.)
 
 ### Using the CMS locally
 

@@ -15,7 +15,7 @@ interface MainLayoutShellProps {
  */
 export function MainLayoutShell({ children, locale }: MainLayoutShellProps) {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "/ru";
+  const isHome = pathname === "/";
 
   if (isHome) {
     return <main className="min-h-screen">{children}</main>;

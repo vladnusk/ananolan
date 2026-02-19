@@ -8,11 +8,9 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
+// Main site: only blog and home (business card); blog has /blog (en) and /ru/blog (ru)
 const MAIN_PATHS = [
   { key: "home", href: "/" },
-  { key: "about", href: "/about" },
-  { key: "pricing", href: "/pricing" },
-  { key: "contact", href: "/contact" },
   { key: "blog", href: "/blog" },
 ];
 
@@ -73,10 +71,14 @@ function NavLinks({
           ? (sectionId === null && activeSection === null) || (sectionId !== null && activeSection === sectionId)
           : fullPathname === fullHref ||
             (href !== "/" && !href.startsWith("#") && fullPathname?.startsWith(fullHref + "/"));
-        const activeUnderline = isTaxesSite && isActive && !mobile ? "border-b-2 border-taxes-cyan pb-0.5" : "";
+        const activeUnderline = isTaxesSite && isActive && !mobile
+          ? "border-b-2 border-taxes-cyan pb-0.5"
+          : !isTaxesSite && isActive && !mobile
+            ? "border-b-2 border-brand-primary pb-0.5"
+            : "";
         const linkClass = mobile
           ? `${baseClass} ${isActive ? (isTaxesSite ? "bg-taxes-gray-100 text-taxes-cyan" : "bg-slate-100 text-brand-primary") : ""}`
-          : `${baseClass} ${isActive ? (isTaxesSite ? "text-taxes-cyan " + activeUnderline : "text-brand-primary underline") : ""}`;
+          : `${baseClass} ${isActive ? (isTaxesSite ? "text-taxes-cyan " + activeUnderline : "text-brand-primary " + activeUnderline) : ""}`;
 
         if (isTaxesSite) {
           return (
