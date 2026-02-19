@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { MainLayoutShell } from "@/components/MainLayoutShell";
 
 type Props = {
   children: React.ReactNode;
@@ -24,9 +23,7 @@ export default async function MainLocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider messages={messages}>
       <div className="flex min-h-screen flex-col">
-        <Header isTaxesSite={false} locale={locale} />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <MainLayoutShell locale={locale}>{children}</MainLayoutShell>
       </div>
     </NextIntlClientProvider>
   );

@@ -23,7 +23,7 @@ export default async function TaxesLocaleLayout({ children, params }: Props) {
     <NextIntlClientProvider locale={locale} messages={messages}>
       <div className="flex min-h-screen flex-col">
         <Header isTaxesSite locale={locale} />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pt-[72px]">{children}</main>
         <Footer isTaxesSite />
       </div>
     </NextIntlClientProvider>

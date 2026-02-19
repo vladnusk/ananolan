@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname as useNextPathname } from "next/navigation";
 import NextLink from "next/link";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -15,29 +16,42 @@ const MAIN_PATHS = [
   { key: "blog", href: "/blog" },
 ];
 
+// All sections anchored on home page (taxes subdomain uses / or /ru, no /en)
 const TAXES_PATHS = [
-  { key: "home", href: "/" },
-  { key: "services", href: "/#services" },
-  { key: "pricing", href: "/pricing" },
-  { key: "faq", href: "/faq" },
-  { key: "contact", href: "/contact" },
-];
+  { key: "home", href: "/", sectionId: null },
+  { key: "services", href: "/#services", sectionId: "services" },
+  { key: "pricing", href: "/#pricing", sectionId: "pricing" },
+  { key: "faq", href: "/#faq", sectionId: "faq" },
+  { key: "contact", href: "/#contact-form", sectionId: "contact-form" },
+] as const;
 
 interface HeaderProps {
   isTaxesSite: boolean;
   locale: string;
 }
 
+/** Build browser path for taxes subdomain: / for en, /ru for ru */
+function taxesHref(href: string, locale: string): string {
+  if (locale !== "ru") return href;
+  const hashIdx = href.indexOf("#");
+  const path = hashIdx >= 0 ? href.slice(0, hashIdx) : href;
+  const hash = hashIdx >= 0 ? href.slice(hashIdx) : "";
+  const ruPath = path === "/" ? "/ru" : `/ru${path}`;
+  return ruPath + hash;
+}
+
 function NavLinks({
   isTaxesSite,
   locale,
   fullPathname,
+  activeSection,
   t,
   mobile = false,
 }: {
   isTaxesSite: boolean;
   locale: string;
   fullPathname: string | null;
+  activeSection: string | null;
   t: (key: string) => string;
   mobile?: boolean;
 }) {
@@ -50,18 +64,19 @@ function NavLinks({
 
   return (
     <>
-      {links.map(({ key, href }) => {
-        const fullHref = isTaxesSite
-          ? href.startsWith("#")
-            ? `/taxes/${locale}${href}`
-            : `/taxes/${locale}${href === "/" ? "" : href}`
-          : href;
-        const isActive =
-          fullPathname === fullHref ||
-          (href !== "/" && !href.startsWith("#") && fullPathname?.startsWith(fullHref + "/"));
+      {links.map((item) => {
+        const key = item.key;
+        const href = "sectionId" in item ? item.href : item.href;
+        const sectionId = "sectionId" in item ? item.sectionId : null;
+        const fullHref = isTaxesSite ? taxesHref(href, locale) : href;
+        const isActive = isTaxesSite
+          ? (sectionId === null && activeSection === null) || (sectionId !== null && activeSection === sectionId)
+          : fullPathname === fullHref ||
+            (href !== "/" && !href.startsWith("#") && fullPathname?.startsWith(fullHref + "/"));
+        const activeUnderline = isTaxesSite && isActive && !mobile ? "border-b-2 border-taxes-cyan pb-0.5" : "";
         const linkClass = mobile
           ? `${baseClass} ${isActive ? (isTaxesSite ? "bg-taxes-gray-100 text-taxes-cyan" : "bg-slate-100 text-brand-primary") : ""}`
-          : `${baseClass} ${isActive ? (isTaxesSite ? "text-taxes-cyan" : "text-brand-primary") : ""}`;
+          : `${baseClass} ${isActive ? (isTaxesSite ? "text-taxes-cyan " + activeUnderline : "text-brand-primary underline") : ""}`;
 
         if (isTaxesSite) {
           return (
@@ -80,10 +95,48 @@ function NavLinks({
   );
 }
 
+const TAXES_SECTION_IDS = ["services", "pricing", "faq", "contact-form"] as const;
+
 export function Header({ isTaxesSite, locale }: HeaderProps) {
   const t = useTranslations(isTaxesSite ? "taxesNav" : "nav");
   const fullPathname = useNextPathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  const isTaxesHome = isTaxesSite && (fullPathname === "/" || fullPathname === "/ru");
+  const logoHref = isTaxesSite ? (locale === "ru" ? "/ru" : "/") : "/";
+
+  useEffect(() => {
+    if (!isTaxesHome) return;
+    const observers: IntersectionObserver[] = [];
+    const margin = "0px 0px -50% 0px";
+    TAXES_SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) setActiveSection(id);
+          });
+        },
+        { rootMargin: margin, threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    const topObs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) setActiveSection(null);
+      },
+      { rootMargin: "0px 0px -99% 0px", threshold: 0 }
+    );
+    const hero = document.getElementById("hero");
+    if (hero) {
+      topObs.observe(hero);
+      observers.push(topObs);
+    }
+    return () => observers.forEach((o) => o.disconnect());
+  }, [isTaxesHome]);
 
   const headerBg = isTaxesSite ? "bg-taxes-white border-taxes-gray-200" : "bg-white/95 border-slate-200";
   const logoClass = isTaxesSite
@@ -91,11 +144,12 @@ export function Header({ isTaxesSite, locale }: HeaderProps) {
     : "text-brand-primary hover:text-brand-secondary";
 
   return (
-    <header className={`border-b ${headerBg} backdrop-blur`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 border-b ${headerBg} backdrop-blur`}>
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 md:flex-nowrap">
         {isTaxesSite ? (
-          <NextLink href={`/taxes/${locale}`} className={`text-xl ${logoClass}`}>
-            A.Nolan Tax Expert
+          <NextLink href={logoHref} className={`flex items-center gap-2 text-xl ${logoClass}`}>
+            <Image src="/icons/logo.svg" alt="" width={28} height={36} className="shrink-0" />
+            A.N. Tax Expert
           </NextLink>
         ) : (
           <Link href="/" className={`text-xl font-semibold ${logoClass}`}>
@@ -109,6 +163,7 @@ export function Header({ isTaxesSite, locale }: HeaderProps) {
             isTaxesSite={isTaxesSite}
             locale={locale}
             fullPathname={fullPathname}
+            activeSection={isTaxesHome ? activeSection : null}
             t={t}
           />
           <LanguageSwitcher isTaxesSite={isTaxesSite} locale={locale} />
@@ -145,6 +200,7 @@ export function Header({ isTaxesSite, locale }: HeaderProps) {
               isTaxesSite={isTaxesSite}
               locale={locale}
               fullPathname={fullPathname}
+              activeSection={isTaxesHome ? activeSection : null}
               t={t}
               mobile
             />

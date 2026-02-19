@@ -23,32 +23,48 @@ locale: "en"
 # so editors pick the folder (locale) when creating/editing.
 
 collections:
-  # ─── Main site pages (Home, About, Pricing, Contact) ───
-  - name: "main_pages_en"
-    label: "Main Pages (English)"
-    folder: "content/main/pages/en"
-    create: true
-    slug: "{{slug}}"
-    extension: "md"
-    format: "frontmatter_markdown"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "string", required: false }
-      - { label: "Layout", name: "layout", widget: "string", required: false }
-      - { label: "Body", name: "body", widget: "markdown" }
-
-  - name: "main_pages_ru"
-    label: "Main Pages (Russian)"
-    folder: "content/main/pages/ru"
-    create: true
-    slug: "{{slug}}"
-    extension: "md"
-    format: "frontmatter_markdown"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "string", required: false }
-      - { label: "Layout", name: "layout", widget: "string", required: false }
-      - { label: "Body", name: "body", widget: "markdown" }
+  # ─── Business card (main domain home, English only) ───
+  - name: "business_card"
+    label: "Business Card"
+    files:
+      - name: "en"
+        label: "English"
+        file: "content/main/business-card/en.md"
+        extension: "md"
+        format: "frontmatter_markdown"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Bio", name: "bio", widget: "text" }
+          - { label: "Photo", name: "photo", widget: "image", required: false }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
+          - label: "Social Links"
+            name: "social_links"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Platform", name: "platform", widget: "select", options: ["linkedin", "facebook", "instagram"] }
+              - { label: "URL", name: "url", widget: "string" }
+          - { label: "Taxes Promo Title", name: "taxes_promo_title", widget: "string" }
+          - { label: "Taxes Promo Subtitle", name: "taxes_promo_subtitle", widget: "text" }
+          - { label: "Taxes CTA Text", name: "taxes_promo_cta_text", widget: "string" }
+          - { label: "Taxes CTA URL", name: "taxes_promo_cta_url", widget: "string" }
+          - label: "Taxes Highlights"
+            name: "taxes_highlights"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Value", name: "value", widget: "string" }
+              - { label: "Label", name: "label", widget: "string" }
+          - { label: "Blog Promo Title", name: "blog_promo_title", widget: "string" }
+          - { label: "Blog Promo Subtitle", name: "blog_promo_subtitle", widget: "string" }
+          - { label: "Blog Promo Description", name: "blog_promo_description", widget: "text" }
+          - { label: "Blog CTA Text", name: "blog_promo_cta_text", widget: "string" }
+          - { label: "Blog CTA URL", name: "blog_promo_cta_url", widget: "string" }
+          - { label: "Contact Form Title", name: "contact_form_title", widget: "string" }
+          - { label: "Contact Submit Text", name: "contact_submit_text", widget: "string" }
 
   # ─── Main site blog ───
   - name: "main_blog_en"
@@ -112,6 +128,15 @@ collections:
               - { label: "Description", name: "description", widget: "text" }
           - { label: "Pricing Headline", name: "pricing_headline", widget: "string" }
           - { label: "Pricing Subtitle", name: "pricing_subtitle", widget: "text" }
+          - { label: "FAQ Headline", name: "faq_headline", widget: "string" }
+          - { label: "FAQ Subtitle", name: "faq_subtitle", widget: "text", required: false }
+          - label: "FAQ Items"
+            name: "faq"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Question", name: "question", widget: "string" }
+              - { label: "Answer", name: "answer", widget: "text" }
           - label: "Pricing Plans"
             name: "pricing"
             widget: "list"
@@ -149,6 +174,15 @@ collections:
               - { label: "Description", name: "description", widget: "text" }
           - { label: "Pricing Headline", name: "pricing_headline", widget: "string" }
           - { label: "Pricing Subtitle", name: "pricing_subtitle", widget: "text" }
+          - { label: "FAQ Headline", name: "faq_headline", widget: "string" }
+          - { label: "FAQ Subtitle", name: "faq_subtitle", widget: "text", required: false }
+          - label: "FAQ Items"
+            name: "faq"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Question", name: "question", widget: "string" }
+              - { label: "Answer", name: "answer", widget: "text" }
           - label: "Pricing Plans"
             name: "pricing"
             widget: "list"

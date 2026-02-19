@@ -18,8 +18,13 @@ export function Footer({ isTaxesSite = false }: FooterProps) {
   const textClass = isTaxesSite ? "text-taxes-gray-600" : "text-slate-600";
   const linkClass = isTaxesSite ? "text-taxes-cyan hover:underline" : "text-brand-primary hover:underline";
 
-  const privacyHref = isTaxesSite ? `/taxes/${locale}/privacy` : "/privacy";
-  const termsHref = isTaxesSite ? `/taxes/${locale}/terms` : "/terms";
+  // On taxes subdomain, browser URLs are /privacy, /terms (en) or /ru/privacy, /ru/terms (ru)
+  const privacyHref = isTaxesSite
+    ? (locale === "ru" ? "/ru/privacy" : "/privacy")
+    : "/privacy";
+  const termsHref = isTaxesSite
+    ? (locale === "ru" ? "/ru/terms" : "/terms")
+    : "/terms";
 
   return (
     <footer className={`mt-auto border-t ${borderBg}`}>

@@ -39,6 +39,14 @@ const DEFAULT_HOME = {
   ],
   pricing_headline: "Transparent & Affordable Pricing",
   pricing_subtitle: "Clear pricing for individuals and businesses. No hidden fees.",
+  faq_headline: "Frequently Asked Questions",
+  faq_subtitle: "Quick answers to common questions about our tax services.",
+  faq: [
+    { question: "Do you work with clients outside the United States?", answer: "Yes. We specialize in helping non-residents, foreign business owners, and new immigrants navigate U.S. tax regulations. All our services are delivered fully online." },
+    { question: "How long does tax preparation take?", answer: "Typical individual returns are completed within 5–7 business days after we receive all documents. Business returns may take 1–2 weeks depending on complexity." },
+    { question: "What documents do I need to provide?", answer: "For individuals, we typically need W-2s, 1099s, and records of deductions. For business returns, we need financial statements, bank records, and receipts. We'll send you a tailored checklist." },
+    { question: "Do you offer year-round support?", answer: "Yes. We provide ongoing bookkeeping, tax planning, and advisory support throughout the year, not just during tax season." },
+  ],
   pricing: [
     { name: "Basic", price: "$99", description: "Individual tax return, simple situation.", features: ["Federal & state filing", "Standard deduction", "Email support"], highlighted: false },
     { name: "Professional", price: "$199", description: "Most popular for individuals and sole proprietors.", features: ["Everything in Basic", "Itemized deductions", "Schedule C support", "Priority support"], highlighted: true },
@@ -55,17 +63,25 @@ export default async function TaxesLandingPage({ params }: Props) {
   const aboutImage = doc?.frontmatter?.about_image;
   const pricing = data.pricing ?? DEFAULT_HOME.pricing;
 
+  // Fallback to defaults when CMS-saved content has empty/missing text
+  const heroTitle = (data.hero_title ?? DEFAULT_HOME.hero_title) || DEFAULT_HOME.hero_title;
+  const heroSubtitle = (data.hero_subtitle ?? DEFAULT_HOME.hero_subtitle) || DEFAULT_HOME.hero_subtitle;
+  const introHeadline = (data.intro_headline ?? DEFAULT_HOME.intro_headline) || DEFAULT_HOME.intro_headline;
+  const introText = (data.intro_text ?? DEFAULT_HOME.intro_text) || DEFAULT_HOME.intro_text;
+  const aboutHeadline = (data.about_headline ?? DEFAULT_HOME.about_headline) || DEFAULT_HOME.about_headline;
+  const aboutText = (data.about_text ?? DEFAULT_HOME.about_text) || DEFAULT_HOME.about_text;
+
   return (
     <TaxesHomePageClient
       locale={locale}
-      heroTitle={data.hero_title}
-      heroSubtitle={data.hero_subtitle}
+      heroTitle={heroTitle}
+      heroSubtitle={heroSubtitle}
       heroImage={heroImage}
       highlights={data.highlights ?? DEFAULT_HOME.highlights}
-      introHeadline={data.intro_headline}
-      introText={data.intro_text}
-      aboutHeadline={data.about_headline}
-      aboutText={data.about_text}
+      introHeadline={introHeadline}
+      introText={introText}
+      aboutHeadline={aboutHeadline}
+      aboutText={aboutText}
       aboutImage={aboutImage}
       servicesHeadline={data.services_headline ?? DEFAULT_HOME.services_headline}
       servicesSubtitle={data.services_subtitle ?? DEFAULT_HOME.services_subtitle}
@@ -73,6 +89,9 @@ export default async function TaxesLandingPage({ params }: Props) {
       pricingHeadline={data.pricing_headline ?? DEFAULT_HOME.pricing_headline}
       pricingSubtitle={data.pricing_subtitle ?? DEFAULT_HOME.pricing_subtitle}
       pricing={pricing}
+      faqHeadline={data.faq_headline ?? DEFAULT_HOME.faq_headline}
+      faqSubtitle={data.faq_subtitle ?? DEFAULT_HOME.faq_subtitle}
+      faq={data.faq ?? DEFAULT_HOME.faq}
     />
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ContactForm } from "@/components/ContactForm";
@@ -46,6 +47,9 @@ interface TaxesHomePageClientProps {
   pricingHeadline: string;
   pricingSubtitle: string;
   pricing: PricingPlan[];
+  faqHeadline: string;
+  faqSubtitle?: string;
+  faq: { question: string; answer: string }[];
 }
 
 export function TaxesHomePageClient({
@@ -65,13 +69,17 @@ export function TaxesHomePageClient({
   pricingHeadline,
   pricingSubtitle,
   pricing,
+  faqHeadline,
+  faqSubtitle,
+  faq,
 }: TaxesHomePageClientProps) {
   const t = useTranslations("taxesHome");
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-taxes-hero">
+      <section id="hero" className="relative overflow-hidden bg-taxes-hero">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-16 md:grid-cols-2 md:py-24">
           <div className="flex flex-col justify-center">
             <h1 className="text-4xl font-bold tracking-tight text-taxes-gray-900 md:text-5xl">
@@ -160,7 +168,7 @@ export function TaxesHomePageClient({
       {/* About */}
       <section className="border-t border-taxes-gray-200 bg-taxes-white py-16">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 md:grid-cols-2 md:gap-16">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-taxes-gray-200">
+          <div className="relative aspect-[3/4] min-h-[320px] overflow-hidden rounded-2xl bg-taxes-gray-200">
             {aboutImage ? (
               <Image
                 src={aboutImage.startsWith("/") ? aboutImage : `/${aboutImage}`}
@@ -241,7 +249,7 @@ export function TaxesHomePageClient({
       </section>
 
       {/* Pricing */}
-      <section className="border-t border-taxes-gray-200 bg-taxes-white py-16">
+      <section id="pricing" className="scroll-mt-20 border-t border-taxes-gray-200 bg-taxes-white py-16">
         <div className="mx-auto max-w-6xl px-4 text-center">
           <SectionBadge>{t("pricingLabel")}</SectionBadge>
           <h2 className="mt-2 text-3xl font-bold text-taxes-gray-900 md:text-4xl">
@@ -302,8 +310,65 @@ export function TaxesHomePageClient({
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="scroll-mt-20 border-t border-taxes-gray-200 bg-taxes-gray-100 py-16">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <SectionBadge>{t("faqLabel")}</SectionBadge>
+          <h2 className="mt-2 text-3xl font-bold text-taxes-gray-900 md:text-4xl">
+            {faqHeadline}
+          </h2>
+          {faqSubtitle && (
+            <p className="mt-3 text-taxes-gray-600">{faqSubtitle}</p>
+          )}
+          <div className="mt-8 space-y-2">
+            {faq.map((item, i) => {
+              const isOpen = openFaqIndex === i;
+              return (
+                <div
+                  key={i}
+                  className="overflow-hidden rounded-xl border border-taxes-gray-200 bg-taxes-white"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-medium text-taxes-gray-900 hover:bg-taxes-gray-50"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${i}`}
+                    id={`faq-question-${i}`}
+                  >
+                    <span>{item.question}</span>
+                    <svg
+                      className={`h-5 w-5 shrink-0 text-taxes-cyan transition-transform ${isOpen ? "rotate-180" : ""}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div
+                    id={`faq-answer-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-question-${i}`}
+                    aria-hidden={!isOpen}
+                    className={`grid transition-[grid-template-rows] duration-200 ease-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="border-t border-taxes-gray-200 px-5 py-4 text-taxes-gray-600 text-left">
+                        <div className="whitespace-pre-line">{item.answer}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Contact + Form */}
-      <section id="contact-form" className="scroll-mt-20 border-t border-taxes-gray-200 bg-taxes-gray-100 py-16">
+      <section id="contact-form" className="scroll-mt-20 border-t border-taxes-gray-200 bg-taxes-white py-16">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 md:grid-cols-2 md:gap-16">
           <div className="flex flex-col justify-center">
             <h2 className="text-2xl font-bold text-taxes-gray-900 md:text-3xl">
@@ -333,7 +398,7 @@ export function TaxesHomePageClient({
               </a>
             </div>
           </div>
-          <div>
+          <div className="rounded-2xl bg-taxes-gray-100 p-6 md:p-8">
             <ContactForm variant="lead" />
           </div>
         </div>

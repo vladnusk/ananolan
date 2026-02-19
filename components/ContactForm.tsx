@@ -20,14 +20,17 @@ const LEAD_FORM_SERVICES = [
  */
 export function ContactForm({
   variant = "default",
+  submitText = "Send Message",
 }: {
-  /** "lead" = extended form (First Name, Last Name, phone, service). "default" = name, email, message. */
-  variant?: "default" | "lead";
+  /** "lead" = extended form. "default" = name, email, message. "business" = Your Name, Email, Message (business card). */
+  variant?: "default" | "lead" | "business";
+  /** Custom submit button text for business variant. */
+  submitText?: string;
 }) {
   const t = useTranslations("contact");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  const formName = variant === "lead" ? "lead" : "contact";
+  const formName = variant === "lead" ? "lead" : variant === "business" ? "business" : "contact";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,6 +53,80 @@ export function ContactForm({
 
   const inputClass =
     "w-full rounded-lg border border-taxes-gray-300 px-3 py-2 focus:border-taxes-cyan focus:outline-none focus:ring-1 focus:ring-taxes-cyan disabled:opacity-50";
+
+  if (variant === "business") {
+    return (
+      <form name={formName} onSubmit={handleSubmit} className="space-y-4">
+        <input type="hidden" name="form-name" value={formName} />
+        <p className="hidden">
+          <label>
+            Don&apos;t fill this out: <input name="bot-field" />
+          </label>
+        </p>
+        <div>
+          <label htmlFor="business-name" className="mb-1 block text-sm font-medium text-taxes-gray-700">
+            Your Name
+          </label>
+          <input
+            id="business-name"
+            name="name"
+            placeholder="John Doe"
+            type="text"
+            required
+            disabled={status === "sending"}
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="business-email" className="mb-1 block text-sm font-medium text-taxes-gray-700">
+            Email Address
+          </label>
+          <input
+            id="business-email"
+            name="email"
+            placeholder="john@example.com"
+            type="email"
+            required
+            disabled={status === "sending"}
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="business-message" className="mb-1 block text-sm font-medium text-taxes-gray-700">
+            Message
+          </label>
+          <textarea
+            id="business-message"
+            name="message"
+            placeholder="How can I help you?"
+            rows={4}
+            required
+            disabled={status === "sending"}
+            className={inputClass}
+          />
+        </div>
+        {status === "success" && (
+          <p className="text-sm text-green-600">{t("success")}</p>
+        )}
+        {status === "error" && (
+          <p className="text-sm text-red-600">{t("error")}</p>
+        )}
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-business-card-blue to-business-card-blue-dark px-6 py-3 font-medium text-white shadow-[0_1px_3px_rgba(0,0,0,0.12)] transition-opacity hover:opacity-95 disabled:opacity-50"
+        >
+          {status === "sending" ? t("sending") : submitText}
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0">
+            <path
+              d="M17.5115 0.197009C17.8665 0.443103 18.0529 0.868494 17.9861 1.29388L15.7361 15.9189C15.6833 16.2599 15.4759 16.5587 15.1736 16.7275C14.8712 16.8962 14.5091 16.9173 14.1892 16.7837L9.9845 15.0365L7.57629 17.6415C7.2634 17.9826 6.77122 18.0951 6.33879 17.9263C5.90637 17.7576 5.62512 17.3392 5.62512 16.8751V13.9361C5.62512 13.7954 5.67786 13.6619 5.77278 13.5599L11.665 7.12982C11.8689 6.90834 11.8618 6.56732 11.6509 6.35638C11.44 6.14545 11.0989 6.13138 10.8775 6.33178L3.72668 12.6845L0.622388 11.1306C0.249731 10.9443 0.0106689 10.5716 0.000122031 10.1568C-0.0104248 9.74193 0.207544 9.35521 0.566138 9.14779L16.3161 0.147791C16.6923 -0.0666624 17.1564 -0.0455687 17.5115 0.197009Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </form>
+    );
+  }
 
   if (variant === "lead") {
     return (

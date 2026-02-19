@@ -35,6 +35,9 @@ export interface TaxesHomeFrontmatter {
   services: { title: string; description: string }[];
   pricing_headline?: string;
   pricing_subtitle?: string;
+  faq_headline?: string;
+  faq_subtitle?: string;
+  faq?: { question: string; answer: string }[];
   pricing?: {
     name: string;
     price: string;
@@ -144,6 +147,31 @@ export const getSlugs = cache(
 );
 
 const TAXES_HOME_DIR = path.join(CONTENT_DIR, "taxes", "home");
+const BUSINESS_CARD_DIR = path.join(CONTENT_DIR, "main", "business-card");
+
+/** Business card homepage (main domain). English only. */
+export interface BusinessCardFrontmatter {
+  name: string;
+  subtitle: string;
+  bio: string;
+  photo?: string;
+  email: string;
+  phone: string;
+  location: string;
+  social_links?: { platform: string; url: string }[];
+  taxes_promo_title: string;
+  taxes_promo_subtitle: string;
+  taxes_promo_cta_text: string;
+  taxes_promo_cta_url: string;
+  taxes_highlights?: { value: string; label: string }[];
+  blog_promo_title: string;
+  blog_promo_subtitle: string;
+  blog_promo_description: string;
+  blog_promo_cta_text: string;
+  blog_promo_cta_url: string;
+  contact_form_title: string;
+  contact_submit_text: string;
+}
 
 /**
  * Media fields that fall back to English when empty (avoids duplicate uploads).
@@ -194,6 +222,23 @@ export const getTaxesHome = cache(
       frontmatter: data,
       content,
     };
+  }
+);
+
+/**
+ * Get business card content (English only).
+ */
+export const getBusinessCard = cache(
+  async (): Promise<ContentDoc<BusinessCardFrontmatter> | null> => {
+    const filePath = path.join(BUSINESS_CARD_DIR, "en.md");
+    try {
+      const raw = fs.readFileSync(filePath, "utf-8");
+      const parsed = matter(raw);
+      const data = parsed.data as BusinessCardFrontmatter;
+      return { slug: "en", frontmatter: data, content: parsed.content };
+    } catch {
+      return null;
+    }
   }
 );
 

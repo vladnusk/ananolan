@@ -33,10 +33,18 @@ const config: Config = {
           black: "#000000",
           white: "#FFFFFF",
         },
+        "business-card": {
+          "gray-bg": "#E5E7EB",
+          "blue-light": "#E0F2FE",
+          blue: "#0284C7",
+          "blue-dark": "#0369A1",
+        },
       },
       backgroundImage: {
         "taxes-hero":
           "linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(243, 244, 246, 1) 50%, rgba(255, 255, 255, 1) 100%)",
+        "business-card-gradient":
+          "linear-gradient(180deg, #0284C7 0%, #0369A1 50%, #0284C7 100%)",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
